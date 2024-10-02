@@ -15,3 +15,5 @@ function appRouter(app) {
     AppController.getStats(req, res);
   });
 }
+
+export default appRouter;

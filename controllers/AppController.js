@@ -12,20 +12,24 @@ class AppController {
       redis: redisClient.isAlive(),
       db: dbClient.isAlive(),
     };
-    response.status(200).send(status);
+    res.status(200).send(status);
   }
 
   /**
    * should return the number of users and files in DB:
    * { "users": 12, "files": 1231 }
-   *  with a status code 200
+   * with a status code 200
    */
   static async getStats(req, res) {
-    const stats = {
-      users: await dbClient.nbUsers(),
-      files: await dbClient.nbFiles(),
-    };
-    response.status(200).send(stats);
+    try {
+      const stats = {
+        users: await dbClient.nbUsers(),
+        files: await dbClient.nbFiles(),
+      };
+      res.status(200).send(stats);
+    } catch (error) {
+      res.status(500).send({ error: 'Could not retrieve stats' });
+    }
   }
 }
 
